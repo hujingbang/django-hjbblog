@@ -1,0 +1,32 @@
+*{
+	margin:0;
+	padding:0;
+}
+.pv-today, .pv-sum,.reading-sum,.issue-acticle-count{
+	display: inline-block;
+}
+
+.header-line{
+	width: 100%;
+	height:300px;
+	padding:30px 30px;
+}
+.pv-today ,.pv-sum,.reading-sum,.issue-acticle-count{
+	width:20%;
+	height:200px;
+	box-shadow: 5px 5px 5px #eee;
+	margin-right: 4%;
+}
+.pv-today .pv-today-title ,.pv-sum-title,.reading-title,.issue-title{
+	border-bottom:1px solid #eee;
+	height: 60px;
+	line-height: 60px;
+	padding-left: 10%;
+}
+.pv-count {
+	padding:50px 50px;
+}
+.pv-today-title img ,.pv-sum-title img,.reading-title img,.issue-title img{
+	vertical-align: middle;
+	padding-left: 20%;
+}

@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" type="text/css">
+    <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+</head>
+<body>
+<div class="container">
+	<div class="header-line">
+		<div class="pv-today">
+			<div class="pv-today-title">
+				<h3>今日访问量<img src="{% static 'images/person-pv.png' %}"></h3>
+			</div>
+			<div class="pv-count">
+				<h1>
+					12000
+				</h1>
+
+			</div>
+		</div>
+		<div class="pv-sum">
+			<div class="pv-sum-title">
+				<h3>总访问量<img src="{% static 'images/pv.png' %}"></h3>
+			</div>
+			<div class="pv-count">
+				<h1>25000</h1>
+			</div>
+		</div>
+		<div class="reading-sum">
+			<div class="reading-title">
+				<h3>总阅读量<img src="{% static 'images/pv-count.png' %}"></h3>
+			</div>
+			<div class="pv-count">
+				<h1>2000</h1>
+			</div>
+		</div>
+		<div class="issue-acticle-count">
+			<div class="issue-title">
+				<h3>发布文章量<img src="{% static 'images/read-pv.png' %}"></h3>
+			</div>
+			<div class="pv-count">
+				<h1>15</h1>
+			</div>
+		</div>
+	</div>
+	<div class="inner-box">
+		
+	</div>
+</div>
+ 
+
+<script>
+
+ 	new Vue({
+ 		el:".container",
+ 		data:{
+ 			"cyj":"陈杨静"
+ 		}
+ 	})
+</script>
+</body>
+</html>

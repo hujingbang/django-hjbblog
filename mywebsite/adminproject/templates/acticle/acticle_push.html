@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8">
+	  <link rel="stylesheet" href="{% static 'css/acticle_push.css' %}" type="text/css">
+	  <script type="text/javascript" src="{% static 'release/wangEditor.js'%}"></script>
+	  <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+
+
+	<title>发布文章</title>
+	<script type="text/javascript">
+
+		$(function (){
+			//文件按钮触发上传窗口
+			$("#select_img").click(function (){
+					$("#fileImage").trigger("click");
+			})
+
+       //创建文本编辑器（wangeditor）
+
+	  var E = window.wangEditor
+      var editor = new E('#editor')
+      editor.create()
+
+	
+         var params = {
+         	filelist:"",//上传文件数据
+         	acticle_subject:"",//文章的标题
+         	acticle_content:"",//文章的内容
+         	acticle_classify:""//文章的分类
+         }
+  		if({{is_template_show}} == 0) {
+
+  			
+
+  			$(".show-upload-img").html("{{subject_thumbnail|safe}}")
+  			$("#acticle-subject").val("{{title_value}}")
+
+  		}
+		
+		//图片上传功能
+		$("#fileImage").change(function(){
+		      //每次切换前，把之前的预览图片清空
+		      $(".show-upload-img").html("")
+	    		
+	            //开始遍历图
+	        var img=document.getElementById("fileImage").files; 
+	        console.log(document.getElementById("fileImage").value)
+	       if(	img.length == 1) {
+	        if(img[0].type == "image/jpg" || img[0].type == "image/jpeg" || img[0].type == "image/png") {
+
+	        	
+							for(var i=0;i<img.length;i++){           
+				        	 	var file=img[i]; 
+				        	 	var url=URL.createObjectURL(file); 
+				            	var box=document.createElement("img"); 
+				           		box.setAttribute("src",url); 
+				            	box.className='img';          
+				           		//append到页面上
+				            	var body=$(".show-upload-img") 
+				            	body.append(box);
+				            	params.filelist = img
+				            	
+				        	}
+				        }else{
+								alert("请上传 jpg png jpeg 的格式图片")
+				        }
+
+	        }else{
+
+				        	params.filelist = ""
+	        
+	        }
+	       
+
+  	  })
+
+		$("#upload_img").click(function () {
+			var files = params.filelist;
+			console.log($(".img").length)
+			if(!files) {
+				alert("上传主题图片不能为空！！")
+			}else{
+
+				params.acticle_subject  = $("#acticle-subject").val()
+
+				params.acticle_classify = $("#acticle-classify").val()
+
+
+				
+				params.acticle_content = editor.txt.html()
+
+				console.log(params.acticle_classify)
+
+				if(params.acticle_subject == "") {
+
+					alert("主题不能为空")
+
+				}else if(params.acticle_classify == "") {
+
+					alert("分类不能为空")
+
+				}else if($.trim(params.acticle_content) == ""){
+
+					alert("文章的内容不能为空")
+
+				}else {
+
+					var uploadFile = new FormData($("#uploadForm")[0]);
+
+	        		uploadFile.append('imgs',files);
+
+	        		uploadFile.append("editor_content",params.acticle_content)
+
+	        		uploadFile.append("subject",params.acticle_subject)
+
+	        		uploadFile.append("classify",params.acticle_classify)
+        	
+        			$.ajax({            
+			            url:'/admin/upload_img', 
+			            type:'POST',  
+			            data:uploadFile, 
+			            async: true,  
+			            cache: false,
+                        processData: false, //不处理数据
+                        contentType:false,
+                        xhr:function () {
+                        	　　var xhr = $.ajaxSettings.xhr();
+                        	           
+							　　xhr.upload.onprogress = function (ev) {
+								console.log(ev) 
+								if(ev.lengthComputable) { 
+									var percent = parseInt(100 * ev.loaded/ev.total); 
+									console.log(percent,ev) 
+								
+								} 
+							　}
+
+							　　　return xhr;
+							　　
+                        },
+                        success:function(data){
+                        	result = JSON.parse(data)
+                        	if(result.status == true) {
+                        		alert(result.successmsg)
+                        		window.location.href =window.location.href 
+                        	}else{
+   
+                        		alert(result.errormsg)
+                        	}
+                        },error:function(){
+                            alert("上传失败！");
+                        }
+                    })
+
+				}
+					
+
+			}
+
+				})
+
+        
+		})
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="acticle-header-title">
+			<h2>{{modify_title}}</h2>
+		</div>
+		<div class="acticle-title">
+			<label>
+				<span>标题：</span>
+				<input type="text" name="acticle-subject" id="acticle-subject" value="">
+			</label>
+		</div>
+		<div class="acticle-classify">
+			<label>
+				<span>分类:</span>
+				{% if is_template_show %}
+				<select name="page-list" id="acticle-classify">
+					{% for item in classify_info %}
+						<option value="{{item.id}}" {% if forloop.counter0 == 0 %}selected {% endif %}>{{item.classify_name}}</option>
+					{% endfor %}
+				</select>
+				{% else %}
+				<select name="page-list" id="acticle-classify">
+					<option value="{{item.id}}" selected>{{modify_classify_name}}</option>
+				</select>
+				{% endif %}
+			</label>
+		</div>
+		<div class="upload-subject-img">
+			<div class="upload">
+				<form id="uploadForm" action="" method="post" enctype="multipart/form-data">
+					<label>
+						<span>上传主题图片：</span>
+						<input id="fileImage" type="file" size="30" name="file" style="display: none;" />
+					</label>
+					<button type="button" id="select_img">选择图片</button>
+					
+					{% csrf_token %}
+				</form>
+			</div>
+			<div class="show-upload-img">
+				
+			</div>
+		</div>
+		<div class="edit-write-acticle">
+			
+		</div>
+		<div id="editor" style="width:80%;">
+			{{content|safe}}
+		</div>
+		<div id= "submit">
+			<button type="button" id="upload_img">提交</button>
+		</div>
+	</div>
+
+
+
+	
+
+
+</body>
+
+</html>

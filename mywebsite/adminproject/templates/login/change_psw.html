@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html class=" js csstransforms3d"><head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>修改密码</title>
+	<link rel="stylesheet" href="{% static 'css/base.css' %}">
+	<link rel="stylesheet" href="{% static 'css/page.css' %}">
+	<!--[if lte IE 8]>
+	<link href="{% static 'css/ie8.css' %}" rel="stylesheet" type="text/css"/>
+	<![endif]-->
+	<script type="text/javascript" src="{% static 'js/modernizr.js' %}"></script>
+	<!--[if IE]>
+	<script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+	<![endif]-->
+	<script type="text/javascript" src="{% static 'js/vue-resource.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+	<style type="text/css">
+		#newpwd_error,#confirmpwd_error{
+			display: none;
+		}
+	</style>
+</head>
+
+<body style="background: #f6f5fa;">
+	<!--content S-->
+	<div class="super-content">
+		<div class="superCtab">
+			<div class="publishArt">
+				<h4>修改密码</h4>
+				<div class="pubMain">
+					<h5 class="pubtitle">新密码<span>（数字、字母、符号组合(_-)，最少6个字符）</span></h5>
+					<div class="pub-txt-bar">
+						<input type="password" class="shuruTxt shuruTxt2" v-model="new_pwd" >
+						<div class="errorBox" id="newpwd_error" ref="newpwd_error"><b class="error" ></b>数字、字母、(_-)，最少6个字符</div>
+					</div>
+					<h5 class="pubtitle">确认密码</h5>
+					<div class="pub-txt-bar">
+						<input type="password" class="shuruTxt shuruTxt2" v-model="confirm_pwd">
+						<div class="errorBox" id="confirmpwd_error" ref="confirmpwd_error"><b class="error"></b>两次密码不一致</div>
+					</div>
+					{% csrf_token %}
+					<div class="pub-btn">
+						<input type="button" id="" value="确定" class="saveBtn" @click="change_pwd">
+						<input type="button" id="" value="重置" class="resetBtn" @click="clear_pwd">
+					</div>
+				</div>
+			</div>
+
+		
+		</div>
+		<!--main-->
+		
+	</div>
+	<!--content E-->
+
+</body>
+</html>
+
+<script>
+
+	Vue.use(VueResource)
+
+	new Vue({
+		el:".super-content",
+		data:{
+			new_pwd:"",
+			confirm_pwd:""
+		},
+		methods: {
+
+			change_pwd:function(){
+				
+				match_newpwd = /^[0-9a-zA-Z_-]{6,}$/.test(this.new_pwd)
+
+				if(!match_newpwd){
+					console.log(this.$refs.newpwd_error)
+							this.$refs.newpwd_error.style.display= "inline-block"
+
+				}else if(this.new_pwd != this.confirm_pwd) {
+
+						this.$refs.newpwd_error.style.display= "none"
+						this.$refs.confirmpwd_error.style.display= "inline-block"
+
+				}else {
+					this.$refs.confirmpwd_error.style.display ="none"	
+
+
+					var that = this
+					this.$http.post("/admin/change_pwd",{
+
+							"change_pwd":that.new_pwd
+
+					}).then(function (res_success) {
+
+							if(res_success.status == 200) {
+
+								if(res_success.body.status == true) {
+
+									alert(res_success.body.msg)
+									window.location.href = window.location.href
+								}else{
+
+									alert(res_success.body.msg)
+
+								}
+
+							}else{
+
+								alert("网络异常")
+							}
+						
+					},function (res_error) {
+
+						alert(res_error)
+					})
+					
+				}
+			},
+			clear_pwd:function() {
+					this.new_pwd=""
+					this.confirm_pwd=""
+			}
+
+
+		}
+
+	})
+</script>

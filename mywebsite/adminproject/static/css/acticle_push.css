@@ -1,0 +1,54 @@
+.acticle-header-title h2 {
+	padding-left:3%;
+	color:#30981a;
+}
+.acticle-title span ,.acticle-classify span{
+	font-size:23px;
+
+}
+.acticle-title input {
+	width:250px;
+	height:30px;
+	border:1px solid #ccc;
+	outline: none;
+}
+.acticle-classify  select {
+	width:150px;
+	height:25px;
+	border:1px solid #ccc;
+	margin-left: 18px;
+}
+.acticle-classify ,.acticle-title,.edit-write-acticle,.upload-subject-img,#editor{
+	margin-top: 50px;
+	margin-left: 25px;
+}
+.upload-box {
+	width:30%;
+	height:150px;
+	text-align: center;
+	border:1px solid #ccc;
+}
+.upload-subject-img .upload span {
+	font-size: 23px;
+}
+.show-upload-img img{
+	margin-top: 25px;
+	zoom:0.5;
+	border:5px solid #eee;
+	box-shadow: 6px 6px 6px #ccc;
+}
+#upload_img,#select_img {
+	width:300px;
+	height: 50px;
+	background-color: skyblue;
+	border:none;
+	color:white;
+	font-weight: 900;
+	outline: none;
+	cursor: pointer;
+	font-size:20px;
+}
+#submit {
+	text-align: center;
+	margin-top: 50px;
+}

@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/adminlogin.css' %}">
+	<script type="text/javascript" src="{% static 'js/vue-resource.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+	<title>后台登录</title>
+	<meta charset="utf-8">
+
+</head>
+<body>
+
+	<div class="admin_loginFrames">
+		<div class="formbox" >
+			<div class="text-center lineheight">
+				<h1  ><strong>HJB</strong>博客后台登录</h1>
+			</div>
+			
+				<div class="row ">
+						<div class="row_inner"> 
+							<img src="{%  static 'images/user.png' %}" class="icon_user">
+					        <input type="text" name="" v-model="usernameValue">
+					   </div>
+				</div>
+				<div class="row FromrowmarTop">
+						<div class="row_inner"> 
+							<img src="{% static 'images/passwd.png'%}" class="icon_pass" >
+							<input type="password" name=""  v-model="passwdValue">
+					</div>
+				</div>
+				<div class="row Captcha_img">
+					<img src="/admin/captcha" @click="captcha_check">
+
+					<input type="text"  v-model="Captcha_Code" id="Captcha_Code">
+				</div>
+			
+		 		{% csrf_token %}
+				<div class="login_sublime text-center">
+					<button type="button" @click="loginSubmit">登录</button>
+				</div>
+		
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	
+
+Vue.use(VueResource);
+	new Vue({
+		el:".formbox",
+		data:{
+			adminLoginUrl:"/admin/login",
+			usernameValue:"",
+			passwdValue:"",
+			Captcha_Code:""
+			
+		},
+		methods:{
+			loginSubmit:function () {
+				
+
+				
+				let params ={
+					 Admin_username:this.usernameValue,
+					  Admin_passwd:this.passwdValue,
+					  	C_Code:this.Captcha_Code
+				}
+				if(this.usernameValue == "") {
+
+					alert("用户名不能空");
+				}else if(this.passwdValue == "")  {
+
+					alert("密码不能为空");
+				}else if(this.Captcha_Code == "") {
+
+					alert("验证码不能为空");
+
+				}else {
+
+					this.$http.post(this.adminLoginUrl,params).then(
+
+					function (response) {
+
+						if(response.status == 200) {
+
+							if(response.body.msg_status == 1000) {
+
+										alert(response.body.success)
+										window.location.href=response.body.url
+
+							}else{
+
+								alert(response.body.error)
+
+							}
+						}else{
+								alert("网络异常！！")
+						}
+
+					},function (response) {
+
+						alert("error");
+				})	
+
+			}
+				
+				
+
+			},
+			captcha_check:function (event) {
+
+				event.currentTarget.setAttribute("src","/admin/captcha?r="+Math.random())
+
+			}
+		}
+
+	});
+</script>
+</html>
