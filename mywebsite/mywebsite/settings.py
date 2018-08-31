@@ -25,7 +25,7 @@ SECRET_KEY = 'oy(z5ckzz9ib8x-2-cuj!==m51$-6t)7f##@fmkp+y2)ln*zwd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': "djangoblogdb",
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': '123456',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {
@@ -130,7 +130,7 @@ APPEND_SLASH = False
 
 path = os.path.dirname(os.path.dirname(__file__))
 
-MEDIA_ROOT = os.path.join(path,"adminproject\\uploads")
+MEDIA_ROOT = os.path.join(path,"adminproject/uploads")
 print(MEDIA_ROOT)
 LOGIN_URL = "/admin/login"
 # Static files (CSS, JavaScript, Images)
