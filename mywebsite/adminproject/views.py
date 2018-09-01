@@ -174,15 +174,16 @@ def acticle_publish_delete(request, d_id=None):
         print(d_id)
         return_info_url = request.META['HTTP_REFERER']
         result_uploads_url = Acticle.objects.filter(id=d_id).values("uploads_file")
-        uploads_url = os.path.join(os.path.dirname(__file__), result_uploads_url[0]['uploads_file'])
-        print(uploads_url)
-        is_delete = Acticle.objects.filter(id=d_id).delete()
-        print(is_delete)
-        if is_delete:
-
-            return HttpResponseRedirect(return_info_url)
-        else:
-            return HttpResponse("<script>alert('删除失败');</script>")
+        print(os.path.dirname(os.path.dirname(__file__)), result_uploads_url[0]['uploads_file'])
+        # uploads_url = os.path.join(, )
+        # print(uploads_url)
+        # is_delete = Acticle.objects.filter(id=d_id).delete()
+        # print(is_delete)
+        # if is_delete:
+        #
+        #     return HttpResponseRedirect(return_info_url)
+        # else:
+        #     return HttpResponse("<script>alert('删除失败');</script>")
 
 
 # 发布文章
