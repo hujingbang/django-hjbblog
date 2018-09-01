@@ -25,7 +25,7 @@ SECRET_KEY = 'oy(z5ckzz9ib8x-2-cuj!==m51$-6t)7f##@fmkp+y2)ln*zwd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['www.hujingbang.club', "120.79.174.91"]
 
 
 # Application definition
@@ -130,7 +130,7 @@ APPEND_SLASH = False
 
 path = os.path.dirname(os.path.dirname(__file__))
 
-MEDIA_ROOT = os.path.join(path,"adminproject/uploads")
+MEDIA_ROOT = os.path.join(path, "adminproject/uploads")
 print(MEDIA_ROOT)
 LOGIN_URL = "/admin/login"
 # Static files (CSS, JavaScript, Images)

@@ -173,7 +173,9 @@ def acticle_publish_delete(request, d_id=None):
         print(request.META['HTTP_REFERER'])
         print(d_id)
         return_info_url = request.META['HTTP_REFERER']
-
+        result_uploads_url = Acticle.object.filter(id=d_id).values("uploads_file")
+        uploads_url = os.path.join(os.path.dirname(__file__), result_uploads_url[0]['uploads_file'])
+        print(uploads_url)
         is_delete = Acticle.objects.filter(id=d_id).delete()
         print(is_delete)
         if is_delete:
@@ -370,3 +372,6 @@ def handle_uploaded_file(f):
     return "/adminproject/uploads/"+file_name
 
 
+def remove_images(request, remove_img_url):
+
+            os.remove(remove_img_url)
